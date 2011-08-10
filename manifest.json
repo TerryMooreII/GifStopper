@@ -1,11 +1,9 @@
 {
   "name": "Gif Stopper",
 	"description": "Stop animated gif images with the escape key.  Works with Google+",
-  "version": "0.1.0",
+  "options_page": "options.html",
   "background_page": "background.html",
-  "permissions": [
-    "tabs", "http://*, https://*"
-  ],
+  "version": "0.2.1",
 	"icons": { "16": "icon16.png",
 				"48": "icon48.png",
 				"128": "icon128.png"},

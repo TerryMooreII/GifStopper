@@ -4,7 +4,24 @@
 // @description    Implements the "stop gif animations on hitting the escape key" feature that all browsers except Safari and Google Chrome have had since forever. Now also for Google Chrome!
 // ==/UserScript==
 
+
 document.addEventListener('keydown', freeze_gifs_on_escape, true);
+ setTimeout(function() {
+    getOptions();
+  }, 50);
+
+function getOptions(){
+	chrome.extension.sendRequest({method: "getStatus"}, function(response) {
+
+	  stopGifOption = response.status;
+	  if (stopGifOption == "true") 
+		 autoStop();
+	});
+}
+
+function autoStop(){
+	 [].slice.apply(document.images).filter(is_gif_image).map(freeze_gif);
+}
 
 function freeze_gifs_on_escape(e) {
 
