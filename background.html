@@ -10,7 +10,7 @@
    
    chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
     if (request.method == "getStatus")
-      sendResponse({status: localStorage['stopGifs']});
+      sendResponse({status: localStorage['stopGifs'], whitelist: localStorage['whitelist']});
     else
       sendResponse({}); // snub them.
 	});

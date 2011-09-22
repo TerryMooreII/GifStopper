@@ -6,7 +6,8 @@
 
 
 document.addEventListener('keydown', freeze_gifs_on_escape, true);
- setTimeout(function() {
+
+setTimeout(function() {
     getOptions();
   }, 50);
 
@@ -14,14 +15,32 @@ function getOptions(){
 	chrome.extension.sendRequest({method: "getStatus"}, function(response) {
 
 	  stopGifOption = response.status;
+	  whitelist = response.whitelist;
 	  if (stopGifOption == "true") 
-		 autoStop();
+		 //autoStop(whitelist);
+		checkWhiteList(whitelist);
 	});
 }
 
-function autoStop(){
-	 [].slice.apply(document.images).filter(is_gif_image).map(freeze_gif);
+function checkWhiteList(whitelist){
+    var aWhiteList = whitelist.split("\n");
+    var url = document.URL;
+    aUrl = url.split('/');
+    url = aUrl[2];
+  
+    if (aWhiteList.indexOf(url) == -1){ 
+      console.log('no matched - auto stopping gifs');
+        autoStop();
+    }else{
+      console.log('this site is whitelisted')
+      return;
+    }
 }
+
+function autoStop(){
+	   [].slice.apply(document.images).filter(is_gif_image).map(freeze_gif);
+	 
+}	
 
 function freeze_gifs_on_escape(e) {
 

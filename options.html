@@ -30,8 +30,10 @@
 <script>    
 function save_options() {
   var stopGifs = document.getElementById("stopGifs").checked;
+  var whitelist = document.getElementById("whitelist").value;
 
-  window.localStorage.setItem("stopGifs", stopGifs)
+  window.localStorage.setItem("stopGifs", stopGifs);
+  window.localStorage.setItem("whitelist", whitelist);
 
   var status = document.getElementById("status");
   //var r = window.localStorage.getItem("stopGifs");
@@ -44,12 +46,16 @@ function save_options() {
 function restore_options() {
   	
   var stopGifs = window.localStorage.getItem("stopGifs");
+  var whitelist = window.localStorage.getItem("whitelist");
   
   if (!stopGifs) {
     document.getElementById('stopGifs').checked = false;
   }else{
     document.getElementById('stopGifs').checked = toBool(stopGifs); 
   }
+  
+  document.getElementById('whitelist').value=whitelist;
+  displayWhiteList();
 }
 
 function toBool(str){
@@ -57,6 +63,16 @@ function toBool(str){
       return false;
    else 
       return str;
+}
+
+function displayWhiteList(){
+    
+    if ( document.getElementById('stopGifs').checked == true){
+	document.getElementById('pWhiteList').style.display = "block";
+    } else {
+	document.getElementById('pWhiteList').style.display = "none";
+    }
+    return
 }
 </script>
 
@@ -68,9 +84,18 @@ function toBool(str){
 
 
 <p id="options">
-  <input type="checkbox" name="stopGifs" id="stopGifs">
+  <input type="checkbox" name="stopGifs" id="stopGifs" onclick="displayWhiteList()">
   Automatically disable Gif Animations.
- <br/><br />
+  <div id="pWhiteList">
+
+  <h2>* Whitelist *</h2>
+  Enter list of sites that you always want to see the animated gifs.<br /> 
+  Place one site's URL per line and do not prefix the http(s)://<br /> 
+  Example:  www.motersho.com<br>
+  <br />
+  <textarea id="whitelist" name="whitelist" cols="40" rows="20"></textarea>
+  </div>
+<br /><br />
   <button onclick="save_options()" id="save">Save</button>
   <div id="status"></div>
 </p>
